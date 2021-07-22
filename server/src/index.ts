@@ -1,14 +1,22 @@
 import 'reflect-metadata';
-import { MikroORM } from '@mikro-orm/core';
-import mikroConfig from './mikro-orm.config';
+import { createConnection } from 'typeorm';
+import path from 'path';
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
+import { Post } from './entities/Post';
 import { PostResolver } from './resolvers/post';
 
 const main = async () => {
-  const orm = await MikroORM.init(mikroConfig);
-  await orm.getMigrator().up();
+  const conn = await createConnection({
+    type: 'postgres',
+    username: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    logging: true,
+    synchronize: true,
+    migrations: [path.join(__dirname, './migrations/*')],
+    entities: [Post],
+  });
 
   const app = express();
 
