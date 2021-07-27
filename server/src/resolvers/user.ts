@@ -6,6 +6,7 @@ import {
   InputType,
   Field,
   ObjectType,
+  Query,
 } from 'type-graphql';
 import { User } from '../entities/User';
 import { Context } from '../types';
@@ -40,11 +41,19 @@ class UserResponse {
 
 @Resolver()
 export class UserResolver {
+  @Query(() => User, { nullable: true })
+  async me(@Ctx() { req, em }: Context) {
+    if (!req.session.uid) return null;
+
+    const user = await em.findOne(User, { id: req.session.uid });
+
+    return user;
+  }
+
   @Mutation(() => User)
   async register(
     @Arg('options') options: UsernamePasswordInput,
-    @Ctx() { em }: Context
-  ): Promise<User> {
+    @Ctx() { req, em }: Context
     if (options.username.length < 3) {
       return { errors: [{ field: 'username', message: 'Username too short' }] };
     }
@@ -70,13 +79,15 @@ export class UserResolver {
       }
     }
 
+    req.session.uid = user.id;
+
     return { user };
   }
 
   @Mutation(() => User)
   async login(
     @Arg('options') options: UsernamePasswordInput,
-    @Ctx() { em }: Context
+    @Ctx() { req, em }: Context
   ): Promise<UserResponse> {
     const user = await em.findOne(User, { username: options.username });
 
@@ -91,6 +102,8 @@ export class UserResolver {
     if (!isMatch) {
       return { errors: [{ field: 'password', message: 'Incorrect password' }] };
     }
+
+    req.session.uid = user.id;
 
     return { user };
   }

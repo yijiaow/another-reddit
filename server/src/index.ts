@@ -2,11 +2,21 @@ import 'reflect-metadata';
 import { createConnection } from 'typeorm';
 import path from 'path';
 import express from 'express';
+import session from 'express-session';
+import redis from 'redis';
+import connectRedis from 'connect-redis';
 import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
+import { __prod__ } from './contants';
 import { Post } from './entities/Post';
 import { PostResolver } from './resolvers/post';
 import { UserResolver } from './resolvers/user';
+
+declare module 'express-session' {
+  export interface SessionData {
+    uid: number;
+  }
+}
 
 const main = async () => {
   const conn = await createConnection({
@@ -20,6 +30,26 @@ const main = async () => {
   });
 
   const app = express();
+
+  const redisClient = redis.createClient();
+  const RedisStore = connectRedis(session);
+
+  app.use(
+    session({
+      store: new RedisStore({
+        client: redisClient,
+      }),
+      secret: process.env.SESSION_SECRET!,
+      cookie: {
+        httpOnly: true,
+        secure: __prod__,
+        sameSite: 'lax',
+        maxAge: 1000 * 60 * 60 * 24 * 14,
+      },
+      saveUninitialized: false,
+      resave: false,
+    })
+  );
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
