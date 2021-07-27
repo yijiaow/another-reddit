@@ -31,10 +31,10 @@ class FieldError {
 
 @ObjectType()
 class UserResponse {
-  @Field()
+  @Field(() => [FieldError], { nullable: true })
   errors?: FieldError[];
 
-  @Field()
+  @Field(() => User, { nullable: true })
   user?: User;
 }
 
@@ -45,14 +45,32 @@ export class UserResolver {
     @Arg('options') options: UsernamePasswordInput,
     @Ctx() { em }: Context
   ): Promise<User> {
-    const hash = await argon2.hash(options.password);
-    const user = em.create(User, {
-      username: options.username,
-      password: hash,
-    });
-    await em.persistAndFlush(user);
+    if (options.username.length < 3) {
+      return { errors: [{ field: 'username', message: 'Username too short' }] };
+    }
 
-    return user;
+    if (options.password.length < 3) {
+      return { errors: [{ field: 'password', message: 'Password too short' }] };
+    }
+
+    const hash = await argon2.hash(options.password);
+
+    try {
+      const user = em.create(User, {
+        username: options.username,
+        password: hash,
+      });
+      await em.persistAndFlush(user);
+    } catch (err) {
+      // Duplicate username error
+      if (err.code === '23505' || err.details.includes('already exists')) {
+        return {
+          errors: [{ field: 'username', message: 'Username unavailable' }],
+        };
+      }
+    }
+
+    return { user };
   }
 
   @Mutation(() => User)
