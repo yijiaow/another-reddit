@@ -8,6 +8,7 @@ import { toErrorMap } from '../utils/toErrorMap';
 interface registerProps {}
 
 interface Values {
+  email: string;
   username: string;
   password: string;
 }
@@ -30,11 +31,15 @@ const Register: React.FC<registerProps> = ({}) => {
 
   return (
     <Formik
-      initialValues={{ username: '', password: '' }}
+        initialValues={{ email: '', username: '', password: '' }}
       onSubmit={handleSubmit}
     >
       {(props: FormikProps<Values>) => (
         <Form>
+            <Box>
+              <InputField label="Email" name="email" type="email" />
+            </Box>
+            <Box>
           <InputField label="Username" name="username" />
           <InputField label="Password" name="password" type="password" />
         </Form>

@@ -15,6 +15,9 @@ import argon2 from 'argon2';
 @InputType()
 class UsernamePasswordInput {
   @Field()
+  email: string;
+
+  @Field()
   username: string;
 
   @Field()
@@ -50,12 +53,29 @@ export class UserResolver {
     return user;
   }
 
-  @Mutation(() => User)
+  @Mutation(() => UserResponse)
   async register(
     @Arg('options') options: UsernamePasswordInput,
     @Ctx() { req, em }: Context
+  ): Promise<UserResponse> {
+    if (!options.email.includes('@')) {
+      return { errors: [{ field: 'email', message: 'Invalid email' }] };
+    }
+
     if (options.username.length < 3) {
       return { errors: [{ field: 'username', message: 'Username too short' }] };
+    }
+
+    const specialsRe = /[*|\"':;<>[\]{}()`!@#$%^&*+=\s]/;
+    if (specialsRe.test(options.username)) {
+      return {
+        errors: [
+          {
+            field: 'username',
+            message: 'Username cannot contain special characters',
+          },
+        ],
+      };
     }
 
     if (options.password.length < 3) {
@@ -64,8 +84,8 @@ export class UserResolver {
 
     const hash = await argon2.hash(options.password);
 
-    try {
       const user = em.create(User, {
+      email: options.email,
         username: options.username,
         password: hash,
       });
@@ -84,12 +104,18 @@ export class UserResolver {
     return { user };
   }
 
-  @Mutation(() => User)
+  @Mutation(() => UserResponse)
   async login(
-    @Arg('options') options: UsernamePasswordInput,
+    @Arg('usernameOrEmail') usernameOrEmail: string,
+    @Arg('password') password: string,
     @Ctx() { req, em }: Context
   ): Promise<UserResponse> {
-    const user = await em.findOne(User, { username: options.username });
+    const user = await em.findOne(
+      User,
+      usernameOrEmail.includes('@')
+        ? { email: usernameOrEmail }
+        : { username: usernameOrEmail }
+    );
 
     if (!user) {
       return {
@@ -97,7 +123,7 @@ export class UserResolver {
       };
     }
 
-    const isMatch = await argon2.verify(user.password, options.password);
+    const isMatch = await argon2.verify(user.password, password);
 
     if (!isMatch) {
       return { errors: [{ field: 'password', message: 'Incorrect password' }] };

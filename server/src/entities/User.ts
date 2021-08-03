@@ -1,6 +1,7 @@
 import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
-import { Field } from 'type-graphql';
+import { ObjectType, Field } from 'type-graphql';
 
+@ObjectType()
 @Entity({ tableName: 'users' })
 export class User {
   @Field()
@@ -14,6 +15,10 @@ export class User {
   @Field()
   @Property({ type: 'date', onUpdate: () => new Date() })
   updatedAt: Date = new Date();
+
+  @Field()
+  @Property({ type: 'text' })
+  email: string;
 
   @Field()
   @Property({ type: 'text', unique: true })

@@ -25,13 +25,13 @@ const login: React.FC<loginProps> = ({}) => {
   return (
     <Container>
       <Formik
-        initialValues={{ username: '', password: '' }}
+        initialValues={{ usernameOrEmail: '', password: '' }}
         onSubmit={handleSubmit}
       >
         {({ isSubmitting }) => (
           <Form>
             <Box>
-              <InputField label="Username" name="username" />
+              <InputField label="Username / Email" name="usernameOrEmail" />
             </Box>
 
             <Box>
