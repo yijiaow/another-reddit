@@ -55,7 +55,8 @@ export type MutationRegisterArgs = {
 
 
 export type MutationLoginArgs = {
-  options: UsernamePasswordInput;
+  password: Scalars['String'];
+  usernameOrEmail: Scalars['String'];
 };
 
 export type Post = {
@@ -83,6 +84,7 @@ export type User = {
   id: Scalars['Float'];
   createdAt: Scalars['DateTime'];
   updatedAt: Scalars['DateTime'];
+  email: Scalars['String'];
   username: Scalars['String'];
 };
 
@@ -93,12 +95,13 @@ export type UserResponse = {
 };
 
 export type UsernamePasswordInput = {
+  email: Scalars['String'];
   username: Scalars['String'];
   password: Scalars['String'];
 };
 
 export type LoginMutationVariables = Exact<{
-  username: Scalars['String'];
+  usernameOrEmail: Scalars['String'];
   password: Scalars['String'];
 }>;
 
@@ -118,6 +121,7 @@ export type LoginMutation = (
 );
 
 export type RegisterMutationVariables = Exact<{
+  email: Scalars['String'];
   username: Scalars['String'];
   password: Scalars['String'];
 }>;
@@ -132,7 +136,7 @@ export type RegisterMutation = (
       & Pick<FieldError, 'field' | 'message'>
     )>>, user?: Maybe<(
       { __typename?: 'User' }
-      & Pick<User, 'id' | 'username'>
+      & Pick<User, 'id' | 'email' | 'username'>
     )> }
   ) }
 );
@@ -150,8 +154,8 @@ export type MeQuery = (
 
 
 export const LoginDocument = gql`
-    mutation Login($username: String!, $password: String!) {
-  login(options: {username: $username, password: $password}) {
+    mutation Login($usernameOrEmail: String!, $password: String!) {
+  login(usernameOrEmail: $usernameOrEmail, password: $password) {
     errors {
       field
       message
@@ -168,14 +172,15 @@ export function useLoginMutation() {
   return Urql.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument);
 };
 export const RegisterDocument = gql`
-    mutation Register($username: String!, $password: String!) {
-  register(options: {username: $username, password: $password}) {
+    mutation Register($email: String!, $username: String!, $password: String!) {
+  register(options: {email: $email, username: $username, password: $password}) {
     errors {
       field
       message
     }
     user {
       id
+      email
       username
     }
   }
