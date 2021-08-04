@@ -1,7 +1,8 @@
 import React from 'react';
 import { useRouter } from 'next/router';
+import NextLink from 'next/link';
 import { Formik, Form } from 'formik';
-import { Box, Button } from '@chakra-ui/react';
+import { Box, Button, Flex, Link } from '@chakra-ui/react';
 import { useLoginMutation } from '../generated/graphql';
 import { Container } from '../components/Container';
 import { InputField } from '../components/InputField';
@@ -37,6 +38,11 @@ const login: React.FC<loginProps> = ({}) => {
             <Box>
               <InputField label="Password" name="password" type="password" />
             </Box>
+            <Flex mt={2}>
+              <NextLink href="/forget-password">
+                <Link>Forget Password?</Link>
+              </NextLink>
+            </Flex>
             <Button
               type="submit"
               isLoading={isSubmitting}

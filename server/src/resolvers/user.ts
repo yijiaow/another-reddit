@@ -133,4 +133,30 @@ export class UserResolver {
 
     return { user };
   }
+
+  @Mutation(() => Boolean)
+  async forgetPassword(
+    @Arg('email') email: string,
+    @Ctx() { em, redis }: Context
+  ): Promise<Boolean> {
+    const user = await em.findOne(User, { email });
+    console.log('forget password called');
+
+    if (!user) return false;
+
+    const token = v4();
+
+    // @ts-ignore
+    redis.set = promisify(redis.set);
+    const key = FORGET_PASSWORD_PREFIX + token;
+    await redis.set(key, user.id.toString(), 'EX', 60 * 60 * 24 * 3); // Set expiration time to be 3 days
+
+    await sendEmail(
+      'admin@fake.domain',
+      email,
+      `<a href=http://localhost:3000/change-password/'${token}'>Reset your password here</a>`
+    );
+
+    return true;
+  }
 }
