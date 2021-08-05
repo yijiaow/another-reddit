@@ -159,4 +159,39 @@ export class UserResolver {
 
     return true;
   }
+
+  @Mutation(() => UserResponse)
+  async changePassword(
+    @Arg('token') token: string,
+    @Arg('newPassword') newPassword: string,
+    @Ctx() { req, em, redis }: Context
+  ): Promise<UserResponse> {
+    if (newPassword.length < 3) {
+      return { errors: [{ field: 'password', message: 'Password too short' }] };
+    }
+
+    // @ts-ignore
+    redis.get = promisify(redis.get);
+    const key = FORGET_PASSWORD_PREFIX + token;
+    const uid: any = await redis.get(key);
+
+    console.log('Redis store UID: ', uid, typeof uid);
+
+    if (!uid) {
+      return { errors: [{ field: 'token', message: 'Invalid token' }] };
+    }
+
+    const user = await em.findOne(User, { id: parseInt(uid) });
+
+    if (!user) {
+      return { errors: [{ field: 'token', message: 'User no longer exists' }] };
+    }
+
+    user.password = await argon2.hash(newPassword);
+    await em.persistAndFlush(user);
+
+    await redis.del(key);
+
+    return { user };
+  }
 }
