@@ -1,7 +1,14 @@
-import { AuthenticationError } from 'apollo-server-express';
-import { Resolver, Query, Ctx, Arg, Mutation } from 'type-graphql';
+import {
+  Resolver,
+  Query,
+  Ctx,
+  Arg,
+  Mutation,
+  UseMiddleware,
+} from 'type-graphql';
 import { Post } from '../entities/Post';
 import { Context } from '../types';
+import { isAuth } from '../middleware/isAuth';
 
 @Resolver()
 export class PostResolver {
@@ -16,14 +23,11 @@ export class PostResolver {
   }
 
   @Mutation(() => Post)
+  @UseMiddleware(isAuth)
   async createPost(
     @Arg('title') title: string,
     @Ctx() { req, em }: Context
   ): Promise<Post> {
-    if (!req.session.uid) {
-      throw new AuthenticationError('Not authenticated');
-    }
-
     const post = em.create(Post, { title });
     await em.persistAndFlush(post);
 

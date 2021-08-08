@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { Formik, Form } from 'formik';
 import { Box, Button } from '@chakra-ui/react';
 import { useCreatePostMutation } from '../generated/graphql';
+import { useIsAuth } from '../utils/useIsAuth';
 import { Container } from '../components/Container';
 import { InputField } from '../components/InputField';
 
@@ -10,14 +11,13 @@ interface createPostProps {}
 
 export const createPost: React.FC<createPostProps> = ({}) => {
   const router = useRouter();
+  useIsAuth();
   const [, createPost] = useCreatePostMutation();
 
   const handleSubmit = async (values) => {
     const response = await createPost(values);
 
-    if (response.error) {
-      console.error(response.error);
-    } else {
+    if (!response.error) {
       router.push('/');
     }
   };
