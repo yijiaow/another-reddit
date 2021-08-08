@@ -15,7 +15,9 @@ export const createPost: React.FC<createPostProps> = ({}) => {
   const handleSubmit = async (values) => {
     const response = await createPost(values);
 
-    if (!response.error) {
+    if (response.error) {
+      console.error(response.error);
+    } else {
       router.push('/');
     }
   };

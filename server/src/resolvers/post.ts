@@ -1,3 +1,4 @@
+import { AuthenticationError } from 'apollo-server-express';
 import { Resolver, Query, Ctx, Arg, Mutation } from 'type-graphql';
 import { Post } from '../entities/Post';
 import { Context } from '../types';
@@ -17,8 +18,12 @@ export class PostResolver {
   @Mutation(() => Post)
   async createPost(
     @Arg('title') title: string,
-    @Ctx() { em }: Context
+    @Ctx() { req, em }: Context
   ): Promise<Post> {
+    if (!req.session.uid) {
+      throw new AuthenticationError('Not authenticated');
+    }
+
     const post = em.create(Post, { title });
     await em.persistAndFlush(post);
 
