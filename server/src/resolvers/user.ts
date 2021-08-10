@@ -177,8 +177,6 @@ export class UserResolver {
     const key = FORGET_PASSWORD_PREFIX + token;
     const uid: any = await redis.get(key);
 
-    console.log('Redis store UID: ', uid, typeof uid);
-
     if (!uid) {
       return { errors: [{ field: 'token', message: 'Invalid token' }] };
     }
@@ -192,7 +190,12 @@ export class UserResolver {
     user.password = await argon2.hash(newPassword);
     await em.persistAndFlush(user);
 
-    await redis.del(key);
+    // @ts-ignore
+    // redis.del = promisify(redis.del);
+    // await redis.del(key);
+
+    // Sign in user with new password after reset
+    req.session.uid = user.id;
 
     return { user };
   }

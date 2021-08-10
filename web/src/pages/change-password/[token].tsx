@@ -37,7 +37,7 @@ export const ChangePassword: NextPage<ChangePasswordProps> = ({ token }) => {
   };
 
   return (
-    <Container>
+    <Container variant="sm">
       <Formik
         initialValues={{ usernameOrEmail: '', password: '' }}
         onSubmit={handleSubmit}
@@ -62,6 +62,7 @@ export const ChangePassword: NextPage<ChangePasswordProps> = ({ token }) => {
             <Button
               type="submit"
               isLoading={isSubmitting}
+              isFullWidth={true}
               colorScheme="teal"
               mt={4}
             >
