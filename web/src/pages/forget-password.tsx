@@ -12,18 +12,18 @@ const forgetPassword: React.FC<forgetPasswordProps> = ({}) => {
   const [, useForgetPassword] = useForgetPasswordMutation();
 
   const handleSubmit = async (values) => {
-    const response = await useForgetPassword(values);
+    await useForgetPassword(values);
     setComplete(true);
   };
 
   return (
-    <Container>
+    <Container variant="sm">
       <Formik initialValues={{ email: '' }} onSubmit={handleSubmit}>
         {({ isSubmitting }) =>
           complete ? (
             <Box>
-              We have sent you an email with password reset instructions if an account associated with that email
-              address exists.
+              We have sent you an email with password reset instructions if an
+              account associated with that email address exists.
             </Box>
           ) : (
             <Form>
@@ -33,6 +33,7 @@ const forgetPassword: React.FC<forgetPasswordProps> = ({}) => {
               <Button
                 type="submit"
                 isLoading={isSubmitting}
+                isFullWidth={true}
                 colorScheme="teal"
                 mt={4}
               >

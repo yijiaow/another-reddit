@@ -30,6 +30,7 @@ export type Mutation = {
   deletePost: Scalars['Boolean'];
   register: UserResponse;
   login: UserResponse;
+  forgetPassword: Scalars['Boolean'];
 };
 
 
@@ -57,6 +58,11 @@ export type MutationRegisterArgs = {
 export type MutationLoginArgs = {
   password: Scalars['String'];
   usernameOrEmail: Scalars['String'];
+};
+
+
+export type MutationForgetPasswordArgs = {
+  email: Scalars['String'];
 };
 
 export type Post = {
@@ -111,6 +117,16 @@ export type CreatePostMutation = (
     { __typename?: 'Post' }
     & Pick<Post, 'id' | 'title' | 'createdAt' | 'updatedAt'>
   ) }
+);
+
+export type ForgetPasswordMutationVariables = Exact<{
+  email: Scalars['String'];
+}>;
+
+
+export type ForgetPasswordMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'forgetPassword'>
 );
 
 export type LoginMutationVariables = Exact<{
@@ -179,6 +195,15 @@ export type PostsQuery = (
 
 export function useCreatePostMutation() {
   return Urql.useMutation<CreatePostMutation, CreatePostMutationVariables>(CreatePostDocument);
+};
+export const ForgetPasswordDocument = gql`
+    mutation ForgetPassword($email: String!) {
+  forgetPassword(email: $email)
+}
+    `;
+
+export function useForgetPasswordMutation() {
+  return Urql.useMutation<ForgetPasswordMutation, ForgetPasswordMutationVariables>(ForgetPasswordDocument);
 };
 export const LoginDocument = gql`
     mutation Login($usernameOrEmail: String!, $password: String!) {

@@ -8,9 +8,12 @@ import {
   ObjectType,
   Query,
 } from 'type-graphql';
+import { promisify } from 'util';
+import { v4 } from 'uuid';
 import { User } from '../entities/User';
 import { Context } from '../types';
-import argon2 from 'argon2';
+import { FORGET_PASSWORD_PREFIX } from '../contants';
+import { sendEmail } from '../utils/sendEmail';
 
 @InputType()
 class UsernamePasswordInput {
@@ -140,7 +143,6 @@ export class UserResolver {
     @Ctx() { em, redis }: Context
   ): Promise<Boolean> {
     const user = await em.findOne(User, { email });
-    console.log('forget password called');
 
     if (!user) return false;
 
@@ -154,7 +156,7 @@ export class UserResolver {
     await sendEmail(
       'admin@fake.domain',
       email,
-      `<a href=http://localhost:3000/change-password/'${token}'>Reset your password here</a>`
+      `<a href=http://localhost:3000/change-password/${token}>Reset your password here</a>`
     );
 
     return true;
