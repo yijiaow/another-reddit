@@ -221,12 +221,21 @@
     strip-json-comments "3.1.1"
 
 "@mikro-orm/entity-generator@^4.5.7":
-  version "4.5.7"
-  resolved "https://registry.yarnpkg.com/@mikro-orm/entity-generator/-/entity-generator-4.5.7.tgz#793a1d614f6570fac9e0d1b4ca4d372ece03b2d9"
-  integrity sha512-n3+qmuEJvpQDmF+04mjPWQmjCiVrf39CrJ/YPX3vWpbmsaPSXjWEhU+v/lKzm/Bq3UKRjeO8JlDne3MVxk+60Q==
+  version "4.5.10"
+  resolved "https://registry.yarnpkg.com/@mikro-orm/entity-generator/-/entity-generator-4.5.10.tgz#97adfee9d1474b6493d460e12878b6aa97e0f57e"
+  integrity sha512-GA3QyQAeV497pXHAxoZ+Z9pHU7L0t4ryTHDAvhwffN4jE6HBCQcx9QJlRnRnzSIiLsYBI9708U+yPzX4tfJkqQ==
   dependencies:
-    "@mikro-orm/knex" "^4.5.7"
+    "@mikro-orm/knex" "^4.5.10"
     fs-extra "9.1.0"
+
+"@mikro-orm/knex@^4.5.10":
+  version "4.5.10"
+  resolved "https://registry.yarnpkg.com/@mikro-orm/knex/-/knex-4.5.10.tgz#1771a0f9fee1b6e30dc34936af5c10b1c1a5e041"
+  integrity sha512-iYSsAlHVNC7m+yz7dDA3JwjBHxyNuGNwQijUpJ6n2Vt55PyorcW4I3wTnHHALUS30Fvjm4TnfZRdio+aQhynsA==
+  dependencies:
+    fs-extra "9.1.0"
+    knex "0.21.19"
+    sqlstring "2.3.2"
 
 "@mikro-orm/knex@^4.5.7":
   version "4.5.7"
