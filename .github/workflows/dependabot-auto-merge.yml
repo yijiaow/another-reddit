@@ -4,7 +4,6 @@ on:
   workflow_run:
     workflows: [Dependabot Review]
     types: [completed]
-    branches: [security-updates]
 
 jobs:
   merge-pr:
