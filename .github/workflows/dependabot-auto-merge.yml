@@ -5,6 +5,9 @@ on:
     workflows: [Dependabot Review]
     types: [completed]
 
+permissions:
+  contents: write
+
 jobs:
   merge-pr:
     runs-on: ubuntu-latest
