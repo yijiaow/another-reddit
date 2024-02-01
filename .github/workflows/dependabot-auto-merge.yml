@@ -4,6 +4,7 @@ on:
   workflow_run:
     workflows: [Dependabot Review]
     types: [completed]
+    branches: [security-updates]
 
 permissions:
   contents: write
