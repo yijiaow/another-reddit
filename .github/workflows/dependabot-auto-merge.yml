@@ -14,8 +14,6 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{github.event.workflow_run.conclusion == 'success' && github.actor == 'dependabot[bot]'}}
     steps:
-      - name: Debug
-        run: echo ${{github.actor}}
       - name: Checkout Repo
         uses: actions/checkout@v4
         
