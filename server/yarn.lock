@@ -228,6 +228,15 @@
     "@mikro-orm/knex" "^4.5.7"
     fs-extra "9.1.0"
 
+"@mikro-orm/knex@^4.5.10":
+  version "4.5.10"
+  resolved "https://registry.yarnpkg.com/@mikro-orm/knex/-/knex-4.5.10.tgz#1771a0f9fee1b6e30dc34936af5c10b1c1a5e041"
+  integrity sha512-iYSsAlHVNC7m+yz7dDA3JwjBHxyNuGNwQijUpJ6n2Vt55PyorcW4I3wTnHHALUS30Fvjm4TnfZRdio+aQhynsA==
+  dependencies:
+    fs-extra "9.1.0"
+    knex "0.21.19"
+    sqlstring "2.3.2"
+
 "@mikro-orm/knex@^4.5.7":
   version "4.5.7"
   resolved "https://registry.yarnpkg.com/@mikro-orm/knex/-/knex-4.5.7.tgz#1c028571e52855c86a716ed2590afab295445fec"
@@ -238,11 +247,11 @@
     sqlstring "2.3.2"
 
 "@mikro-orm/migrations@^4.5.7":
-  version "4.5.7"
-  resolved "https://registry.yarnpkg.com/@mikro-orm/migrations/-/migrations-4.5.7.tgz#85e3bb448e1c2542167120dbc8376e7a6168f9c0"
-  integrity sha512-GyTVq7a6kLDhp17o/2Z4OW9jk1o0BQ3lNx6i3fr9Qq6YXpwLCUYwf6nzjIWZd3ImhpgV7BsmnENzzYikM+Yjkw==
+  version "4.5.10"
+  resolved "https://registry.yarnpkg.com/@mikro-orm/migrations/-/migrations-4.5.10.tgz#4f2aa203f9b69483a86d4f9a3b9ea55248ec5d4a"
+  integrity sha512-dnXDIHrOlIZL/ImXLtbxHiNlAHKvxDmXWtL9ejM0kzx7NDDcxIR5aEqabT3DlawaoupyqOVuI30j3trZxiJdeg==
   dependencies:
-    "@mikro-orm/knex" "^4.5.7"
+    "@mikro-orm/knex" "^4.5.10"
     "@types/umzug" "2.3.0"
     fs-extra "9.1.0"
     knex "0.21.19"
