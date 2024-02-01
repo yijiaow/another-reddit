@@ -4,6 +4,7 @@ on:
   workflow_run:
     workflows: ['Dependabot Review']
     types: [completed]
+    branches: [security-updates]
 
 jobs:
   merge-pr:
@@ -12,6 +13,8 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
+        with:
+          ref: ${{github.event.workflow_run.base_branch}}
         
       - name: Enable auto-merge for Dependabot PRs
         run: gh pr merge --auto --squash $PR_URL
