@@ -228,10 +228,10 @@
     "@mikro-orm/knex" "^4.5.7"
     fs-extra "9.1.0"
 
-"@mikro-orm/knex@^4.5.7":
-  version "4.5.7"
-  resolved "https://registry.yarnpkg.com/@mikro-orm/knex/-/knex-4.5.7.tgz#1c028571e52855c86a716ed2590afab295445fec"
-  integrity sha512-D9LYnifo81F3m4FyJkOo/wCl9P1RI7eZUsRrQKdLy97XvTKQlsSKbNqcRJwTrTLglUfYbMzBQ5IfLGQnZ1FH3Q==
+"@mikro-orm/knex@^4.5.10", "@mikro-orm/knex@^4.5.7":
+  version "4.5.10"
+  resolved "https://registry.yarnpkg.com/@mikro-orm/knex/-/knex-4.5.10.tgz#1771a0f9fee1b6e30dc34936af5c10b1c1a5e041"
+  integrity sha512-iYSsAlHVNC7m+yz7dDA3JwjBHxyNuGNwQijUpJ6n2Vt55PyorcW4I3wTnHHALUS30Fvjm4TnfZRdio+aQhynsA==
   dependencies:
     fs-extra "9.1.0"
     knex "0.21.19"
@@ -248,12 +248,12 @@
     knex "0.21.19"
     umzug "2.3.0"
 
-"@mikro-orm/postgresql@^4.5.7":
-  version "4.5.7"
-  resolved "https://registry.yarnpkg.com/@mikro-orm/postgresql/-/postgresql-4.5.7.tgz#410b03c07dce7b1a4e6d13b218dcfb44484556d1"
-  integrity sha512-pAS/XhrExEcptDetRGsgayK87CMeL6bugUMvsSWjvIDG3sufDPS5zeZsVbxo0+rTH4/PvqmiFnw4WEre0MasNw==
+"@mikro-orm/postgresql@^4.5.10":
+  version "4.5.10"
+  resolved "https://registry.yarnpkg.com/@mikro-orm/postgresql/-/postgresql-4.5.10.tgz#89847e39bf5b2b18fe1f57e75b19efcb57f47df3"
+  integrity sha512-hVTW5rO43T3k4AN3e1tu2rUZIAN0VuBrizdf+sGYpKZ7xtLAOFXY10TCmLdv/B6euAwrXRSsCraOOT7JnOQyBg==
   dependencies:
-    "@mikro-orm/knex" "^4.5.7"
+    "@mikro-orm/knex" "^4.5.10"
     pg "8.6.0"
 
 "@nodelib/fs.scandir@2.1.5":
