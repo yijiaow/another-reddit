@@ -17,7 +17,10 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: security-updates
-        
+      - name: Debug
+        run: echo "$GITHUB_ACTOR"
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
       - name: Enable auto-merge for Dependabot PRs
         # run: gh pr merge --auto --squash "$PR_URL"
         # env:
