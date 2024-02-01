@@ -18,10 +18,10 @@ jobs:
         with:
           ref: security-updates
       - name: Debug
-        run: echo "$GITHUB_ACTOR $WORKFLOW_RUN_ACTOR"
+        run: echo "$WORKFLOW_RUN_ACTOR"
         env:
           GITHUB_ACTOR: ${{ github.actor }}
-          WORKFLOW_RUN_ACTOR: ${{ github.event.workflow_run.actor }}
+          $WORKFLOW_RUN_ACTOR: ${{ github.event.workflow_run.actor }}
       - name: Enable auto-merge for Dependabot PRs
         # run: gh pr merge --auto --squash "$PR_URL"
         # env:
